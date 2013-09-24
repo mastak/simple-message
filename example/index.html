@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Simple message example</title>
+
+		  <style>
+		  	button {
+		  		margin-bottom: 20px;
+		  	}
+
+		  	h3 {
+		  		margin: 0;
+		  		padding: 0;
+		  	}
+
+		  	#messageHolder {
+		  		position: absolute;
+		  		top: 0;
+		  		right: 10px;
+		  	}
+		  		#messageHolder .message-item {
+  					max-height: 0px;
+					margin: 0;
+					padding: 0;
+					cursor: pointer;
+					overflow: hidden;
+
+					-webkit-transition: all .5s ease-in-out;
+					-moz-transition: all .5s ease-in-out;
+					-ms-transition: all .5s ease-in-out;
+					-o-transition: all .5s ease-in-out;
+					transition: all .5s ease-in-out;
+		  		}
+		  		#messageHolder .message-item.active {
+					max-height: 200px;
+				}
+
+				.message-wrap {
+					border: 1px solid black;
+					padding: 10px;
+					margin-bottom: 10px;
+				}
+
+		  </style>
+
+	</head>
+
+	<body>
+		<button id="button1">Simple message</button>
+		<button id="button2">Simple message with timeout</button>
+
+		<script src="../simple-message.js"></script>
+		<script>
+			document.getElementById('button1').onclick = function() {
+				Message.show({
+					title: 'Message title',
+					messageText: 'Click to close',
+					activeClass: 'active',
+					closeDelay: 500
+				});
+			}
+
+			document.getElementById('button2').onclick = function() {
+				Message.show({
+					title: 'Message second title',
+					messageText: 'Auto close',
+					activeClass: 'active',
+					closeDelay: 500,
+					timeout: 5000
+				});
+			}
+
+		</script>
+	</body>
+
+</html>
