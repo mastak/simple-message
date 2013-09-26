@@ -2,34 +2,6 @@
 
 
 /*
- * remove class
- */
-
-function removeClass(o, c) {
-    var re = new RegExp('(^|\\s)' + c + '(\\s|$)', 'g');
-    o.className = o.className.replace(re, '$1').replace(/\s+/g, ' ').replace(/(^ | $)/g, '');
-}
-
-
-/*
- * recursive merge of two object
- */
-
-function merge(object, override) {
-	for (var key in override) {
-		if (override.hasOwnProperty(key)) {
-			if (override[key] && override[key].constructor && override[key].constructor === Object) {
-				merge(object[key] = object[key] || {}, override[key]);
-			} else {
-				object[key] = override[key];
-			}
-		}
-	}
-	return object;
-}
-
-
-/*
  * create a tag with attributes
  */
 
@@ -108,7 +80,7 @@ var MessageItem = function (options) {
 		}
 	};
 
-	this.options = merge(this.defaults, options);
+	this.options = this.merge(this.defaults, options);
 	return this;
 };
 
@@ -140,15 +112,15 @@ MessageItem.prototype.show = function () {
 };
 
 MessageItem.prototype.close = function () {
-	var self = this;
+	var self = this,
+		re = new RegExp('(^|\\s)' + self.options.activeClass + '(\\s|$)', 'g');
 
 	if (self.options.closed) {
 		return true;
 	}
 
 	self.options.closed = true;
-
-	removeClass(self.options.message, self.options.activeClass);
+    self.options.message.className = self.options.message.className.replace(re, '$1').replace(/\s+/g, ' ').replace(/(^ | $)/g, '');
 
 	window.setTimeout(function () {
 		self.options.message_holder.removeChild(self.options.message);
@@ -188,3 +160,20 @@ MessageItem.prototype.render = function (option) {
 	}
 	return wrapper.outerHTML;
 };
+
+/*
+ * recursive merge of two object
+ */
+
+MessageItem.prototype.merge = function (object, override) {
+	for (var key in override) {
+		if (override.hasOwnProperty(key)) {
+			if (override[key] && override[key].constructor && override[key].constructor === Object) {
+				this.merge(object[key] = object[key] || {}, override[key]);
+			} else {
+				object[key] = override[key];
+			}
+		}
+	}
+	return object;
+}
